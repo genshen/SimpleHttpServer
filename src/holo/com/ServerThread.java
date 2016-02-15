@@ -1,7 +1,7 @@
 package holo.com;
 
 import holo.com.request.RequestHeader;
-import holo.com.response.ResponseHttp;
+import holo.com.response.core.ResponseHttp;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -14,7 +14,6 @@ public class ServerThread extends Thread {
 
     public ServerThread(Socket clientSocket) {
         this.clientSocket = clientSocket;
-        run();
     }
 
     @Override
