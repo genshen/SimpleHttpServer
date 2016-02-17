@@ -1,5 +1,6 @@
 package holo.com.response.core;
 
+import holo.com.response.core.session.HttpSession;
 import holo.com.tools.StringTools;
 import holo.com.tools.json.JSONObject;
 import holo.com.tools.json.JSONString;
@@ -14,29 +15,17 @@ import java.util.Map;
 public class Controller {
     public BufferedOutputStream bos;
     public ResponseHeader responseHead;
+    public HttpSession session;
 
-    public Controller(OutputStream os) {
+    public Controller(OutputStream os, HttpSession session) {
         bos = new BufferedOutputStream(os);
         this.responseHead = new ResponseHeader();
-    }
-
-    private void renderHead() {
-        try {
-            bos.write((responseHead.first_line + "\r\n").getBytes());
-            Iterator<Map.Entry<String, String>> en = responseHead.heads.entrySet().iterator();
-            Map.Entry<String, String> m;
-            while (en.hasNext()) {
-                m = en.next();
-                bos.write((m.getKey() + ":" + m.getValue() + "\r\n").getBytes());
-            }
-            bos.write("\r\n".getBytes());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        this.session = session;
+        responseHead.setCookie(session);
     }
 
     public void render(String i) {
-        renderHead();
+        responseHead.Out(bos);
         try {
             bos.write((i).getBytes());
             bos.flush();
@@ -46,8 +35,8 @@ public class Controller {
     }
 
     public void render(String template, JSONObject data) {
-        renderHead();
-        HtmlRender html = new HtmlRender(template, data,bos);
+        responseHead.Out(bos);
+        HtmlRender html = new HtmlRender(template, data, bos);
         html.render();
     }
 

@@ -1,6 +1,7 @@
 package holo.com.response.controllers;
 
 import holo.com.response.core.Controller;
+import holo.com.response.core.session.HttpSession;
 import holo.com.tools.json.JSONArray;
 import holo.com.tools.json.JSONObject;
 
@@ -12,8 +13,8 @@ import java.io.OutputStream;
 public class Index extends Controller {
     String string;
 
-    public Index(OutputStream os) {
-        super(os);
+    public Index(OutputStream os, HttpSession session) {
+        super(os,session);
     }
 
     public void indexAction() {

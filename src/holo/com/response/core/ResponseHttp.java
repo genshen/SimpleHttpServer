@@ -3,6 +3,7 @@ package holo.com.response.core;
 
 import holo.com.request.RequestHeader;
 import holo.com.request.RequestType;
+import holo.com.response.core.session.HttpSession;
 import holo.com.response.error.NotFoundError;
 import holo.com.tools.StringTools;
 
@@ -92,10 +93,11 @@ public class ResponseHttp {
 
     private void RenderHtml(OutputStream os) {
         Router router = new Router(request_url);
+        HttpSession session = new HttpSession(header.getHeaderValueByKey(HttpSession.Cookie));
         try {
             Class c = Class.forName(Config.ControllerConfig.ControllerPackage + router.controller);
-            Constructor constructor = c.getDeclaredConstructor(OutputStream.class);
-            Object obj = constructor.newInstance(os);
+            Constructor constructor = c.getDeclaredConstructor(OutputStream.class, HttpSession.class);
+            Object obj = constructor.newInstance(os, session);
             Method method = c.getDeclaredMethod(router.action + Config.ControllerConfig.Action);
             method.invoke(obj);
         } catch (Exception e) {
