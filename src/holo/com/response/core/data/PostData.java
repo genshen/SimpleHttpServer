@@ -3,20 +3,17 @@ package holo.com.response.core.data;
 import holo.com.request.HttpReader;
 import holo.com.tools.StringTools;
 
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 /**
- * Created by ¸ùÉî on 2016/2/14.
+ * Created by cgs on 2016/2/14.
  */
-public class PostData {
+public class PostData extends BasicData{
     final static int FileReaderBufferSize = 1024;
     final static String ContentDisposition = "Content-Disposition";
     String multiDivLine = "";
     long dataLength;
-    Map<String, String> data = new HashMap<>();
+    boolean hasMutilReceived = true;
     HttpReader reader;
 
     public PostData(HttpReader reader, String contentType, long dataLength) {
@@ -26,13 +23,27 @@ public class PostData {
             int position = contentType.lastIndexOf("boundary");
             if (position == -1) return;
             multiDivLine = contentType.substring(position + 9); // 9 = "boundary".length()+ 1    /* char = */
-            setMultipartField();
+            hasMutilReceived = false;
         } else {
             setNormalData();
         }
     }
 
     private void setNormalData() {
+        if (dataLength > FileReaderBufferSize)
+            return;
+        byte[] buff = new byte[(int) dataLength];
+        try {
+            int len = reader.read(buff);
+            String d = new String(buff, "utf-8");
+            String[] v = d.split("&|=");
+            int length = v.length / 2;
+            for (int i = 0; i < length; i++) {
+                data.put(v[2 * i], v[2 * i + 1]);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void setMultipartField() {
@@ -90,6 +101,29 @@ public class PostData {
                 }
             }
         } while (read_count < dataLength);
+    }
+
+    /**
+     * receive Multipart data(usually,it's file data)
+     */
+    private void fill() {
+        if (!hasMutilReceived)
+            setMultipartField();
+    }
+
+    public Map getAllData() {
+        fill();
+        return data;
+    }
+
+    public String getString(String name) {
+        fill();
+        return super.getString(name);
+    }
+
+    public int getInt(String name) {
+        fill();
+        return super.getInt(name);
     }
 
 }

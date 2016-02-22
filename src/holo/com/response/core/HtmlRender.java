@@ -9,8 +9,7 @@ import java.io.*;
  * Created by ¸ùÉî on 2016/2/14.
  */
 public class HtmlRender {
-    final static String host = Network.getLocalIp();
-    final static byte[] BASE = ("<base href='http://" + host + ":"+Network.HttpPort+"/'/>").getBytes();
+    final static byte[] BASE = ("<base href='http://" + Network.HOST + ":" + Network.HttpPort + "/'/>").getBytes();
     BufferedOutputStream bos;
     String template;
     JSONObject data;
@@ -22,24 +21,45 @@ public class HtmlRender {
         this.data = data;
     }
 
-    public void render() {
+    public HtmlRender(BufferedOutputStream bos) {
+        this.bos = bos;
+    }
+
+    public void renderLayout() {
+        String line;
         try {
             InputStreamReader is_r = new InputStreamReader(new FileInputStream(Config.View.VIEW_LAYOUT));
             BufferedReader br_r = new BufferedReader(is_r);
-            String line;
-            sendLayout(Config.View.VIEW_LAYOUT_TOP, br_r);
-            sendHtmlHead();
-            sendLayout(Config.View.VIEW_LAYOUT_HEADER, br_r);
-            sendTemplates(template);
-            sendLayout(Config.View.VIEW_LAYOUT_BREAK, br_r);
-            sendData(data);
-            //send out left content
             while ((line = br_r.readLine()) != null) {
                 bos.write(line.getBytes());
                 bos.write(newline);
             }
             br_r.close();
             is_r.close();
+            bos.flush();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void render() {
+        try {
+//            InputStreamReader is_r = new InputStreamReader(new FileInputStream(Config.View.VIEW_LAYOUT));
+//            BufferedReader br_r = new BufferedReader(is_r);
+//            String line;
+//            sendLayout(Config.View.VIEW_LAYOUT_TOP, br_r);
+//            sendHtmlHead();
+//            sendLayout(Config.View.VIEW_LAYOUT_HEADER, br_r);
+            sendTemplates(template);
+//            sendLayout(Config.View.VIEW_LAYOUT_BREAK, br_r);
+            sendData(data);
+            //send out left content
+//            while ((line = br_r.readLine()) != null) {
+//                bos.write(line.getBytes());
+//                bos.write(newline);
+//            }
+//            br_r.close();
+//            is_r.close();
             bos.flush();
         } catch (IOException e) {
             e.printStackTrace();

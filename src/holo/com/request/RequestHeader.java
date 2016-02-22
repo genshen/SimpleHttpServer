@@ -15,6 +15,7 @@ import java.util.Map;
 public class RequestHeader {
     RequestLineFirst requestLineFirst;
     Map<String, String> Header = new HashMap<>();
+    PostData postData;
     final protected static String Content_Length = "Content-Length";
     final protected static String Content_Type = "Content-Type";
 
@@ -41,7 +42,7 @@ public class RequestHeader {
      * @param reader stream from client
      */
     private void setData(HttpReader reader) {
-        PostData postData = new PostData(reader, Header.get(Content_Type),
+        postData = new PostData(reader, Header.get(Content_Type),
                 Long.parseLong(Header.get(Content_Length)));
     }
 
@@ -68,16 +69,20 @@ public class RequestHeader {
         return requestLineFirst;
     }
 
+    public PostData getPostData() {
+        return postData;
+    }
     /**
      * first line of http request
      */
     public class RequestLineFirst {
         String requestUri;
+        public String requestTail = "";
         boolean isHttp = false;
         RequestType requestType;
         byte method;
         final static byte GET = 0;
-        final static byte POST = 1;
+        public final static byte POST = 1;
 
         /**
          * the first line just like {@code GET /bootstrap/css/bootstrap.min.css HTTP/1.1}
@@ -94,6 +99,7 @@ public class RequestHeader {
                 String getUrl[] = Re[1].split("[?]", 2);
                 requestUri = StringTools.NormalizUrl(getUrl[0]);
                 requestType = StringTools.getRequestType(requestUri);
+                requestTail = getUrl.length == 2 ? getUrl[1] : "";
             }
         }
 

@@ -12,6 +12,7 @@ import java.util.Enumeration;
  * Created by ¸ùÉî on 2016/2/15.
  */
 public class Network {
+    public static String HOST = getLocalIp();
     public static int HttpPort = 8080;
 
     public static String getLocalIp() {

@@ -22,7 +22,7 @@ public class Config {
         final static String VIEW = "F:/HttpFiles/core/views/";
         final static String VIEW_LAYOUT = "F:/HttpFiles/core/views/layout/main.html";
         final static short VIEW_LAYOUT_TOP = 3;
-        final static short VIEW_LAYOUT_HEADER = 39;
+        final static short VIEW_LAYOUT_HEADER = 24;
         final static short VIEW_LAYOUT_BREAK = 7;
     }
 

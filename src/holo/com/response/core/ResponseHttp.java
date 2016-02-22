@@ -94,10 +94,11 @@ public class ResponseHttp {
     private void RenderHtml(OutputStream os) {
         Router router = new Router(request_url);
         HttpSession session = new HttpSession(header.getHeaderValueByKey(HttpSession.Cookie));
+        String pjax = header.getHeaderValueByKey("X-PJAX");
         try {
             Class c = Class.forName(Config.ControllerConfig.ControllerPackage + router.controller);
-            Constructor constructor = c.getDeclaredConstructor(OutputStream.class, HttpSession.class);
-            Object obj = constructor.newInstance(os, session);
+            Constructor constructor = c.getDeclaredConstructor(OutputStream.class, RequestHeader.class, HttpSession.class, boolean.class);
+            Object obj = constructor.newInstance(os, header, session, pjax != null && pjax.equals("true"));
             Method method = c.getDeclaredMethod(router.action + Config.ControllerConfig.Action);
             method.invoke(obj);
         } catch (Exception e) {

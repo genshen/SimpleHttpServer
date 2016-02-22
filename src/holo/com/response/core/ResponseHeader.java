@@ -14,6 +14,8 @@ import java.util.Map;
 public class ResponseHeader {
     final static String Set_Cookie = "Set-Cookie";
     final static String STATE_OK = "HTTP/1.1 200 OK";
+    final static String Redirect = "HTTP/1.1 302 Found";
+    public final static String NOT_FOUND = "HTTP/1.1 404 NotFound";
     String first_line = STATE_OK;
     Map<String, String> heads = new HashMap<>();
 
@@ -38,6 +40,10 @@ public class ResponseHeader {
             heads.put(Set_Cookie, HttpSession.SESSION_ID + "=" + session.create());
             return;
         }
+    }
+
+    public void setState(String line){
+        first_line = line;
     }
 
     public void setHeadValue(String key, String value) {
