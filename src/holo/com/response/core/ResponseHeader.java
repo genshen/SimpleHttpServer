@@ -29,6 +29,7 @@ public class ResponseHeader {
                 bos.write((m.getKey() + ":" + m.getValue() + "\r\n").getBytes());
             }
             bos.write("\r\n".getBytes());
+            bos.flush();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -36,7 +37,7 @@ public class ResponseHeader {
 
 
     public void setCookie(HttpSession session) {
-        if (session.session_name.isEmpty()) {
+        if (session.session_id.isEmpty()) {
             heads.put(Set_Cookie, HttpSession.SESSION_ID + "=" + session.create());
             return;
         }

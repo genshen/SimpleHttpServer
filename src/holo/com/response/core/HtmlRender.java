@@ -25,6 +25,7 @@ public class HtmlRender {
         this.bos = bos;
     }
 
+    @Deprecated
     public void renderLayout() {
         String line;
         try {
@@ -44,22 +45,22 @@ public class HtmlRender {
 
     public void render() {
         try {
-//            InputStreamReader is_r = new InputStreamReader(new FileInputStream(Config.View.VIEW_LAYOUT));
-//            BufferedReader br_r = new BufferedReader(is_r);
-//            String line;
-//            sendLayout(Config.View.VIEW_LAYOUT_TOP, br_r);
-//            sendHtmlHead();
-//            sendLayout(Config.View.VIEW_LAYOUT_HEADER, br_r);
+            InputStreamReader is_r = new InputStreamReader(new FileInputStream(Config.View.VIEW_LAYOUT));
+            BufferedReader br_r = new BufferedReader(is_r);
+            String line;
+            sendLayout(Config.View.VIEW_LAYOUT_TOP, br_r);
+            sendHtmlHead();
+            sendLayout(Config.View.VIEW_LAYOUT_HEADER, br_r);
             sendTemplates(template);
-//            sendLayout(Config.View.VIEW_LAYOUT_BREAK, br_r);
+            sendLayout(Config.View.VIEW_LAYOUT_BREAK, br_r);
             sendData(data);
-            //send out left content
-//            while ((line = br_r.readLine()) != null) {
-//                bos.write(line.getBytes());
-//                bos.write(newline);
-//            }
-//            br_r.close();
-//            is_r.close();
+//            send out left content
+            while ((line = br_r.readLine()) != null) {
+                bos.write(line.getBytes());
+                bos.write(newline);
+            }
+            br_r.close();
+            is_r.close();
             bos.flush();
         } catch (IOException e) {
             e.printStackTrace();

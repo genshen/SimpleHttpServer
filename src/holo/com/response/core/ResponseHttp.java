@@ -3,6 +3,7 @@ package holo.com.response.core;
 
 import holo.com.request.RequestHeader;
 import holo.com.request.RequestType;
+import holo.com.response.controllers.Errors;
 import holo.com.response.core.session.HttpSession;
 import holo.com.response.error.NotFoundError;
 import holo.com.tools.StringTools;
@@ -29,7 +30,10 @@ public class ResponseHttp {
     public void startResponse(OutputStream outputStream) {
         if (requestType != RequestType.MEDIA) {
             BuiltTextResponse(outputStream);
-        } else {
+        }else if (!request_url.startsWith(Config.AssetsFileStart)) {
+            //medias generated dynamically
+            generateMedia(outputStream);
+        } else {  //medias  in assets or
             BuiltMediaResponse(outputStream);
         }
     }
@@ -56,6 +60,21 @@ public class ResponseHttp {
             e.printStackTrace();
         }
         System.out.println("send finished\t" + request_url);
+    }
+
+    private void generateMedia(OutputStream os) {
+        Router router = new Router(request_url,null);
+        HttpSession session = new HttpSession(header.getHeaderValueByKey(HttpSession.Cookie));
+        try {
+            Class c = Class.forName(Config.ControllerConfig.ControllerPackage + router.controller);
+            Constructor constructor = c.getDeclaredConstructor(OutputStream.class, RequestHeader.class, HttpSession.class);
+            Object obj = constructor.newInstance(os, header, session);
+            Method method = c.getDeclaredMethod(router.action + Config.ControllerConfig.Media);
+            method.invoke(obj);
+        } catch (Exception e) {
+            e.printStackTrace();
+            new NotFoundError(os);
+        }
     }
 
     final byte[] newline = {'\r', '\n'};
@@ -94,17 +113,16 @@ public class ResponseHttp {
     private void RenderHtml(OutputStream os) {
         Router router = new Router(request_url);
         HttpSession session = new HttpSession(header.getHeaderValueByKey(HttpSession.Cookie));
-        String pjax = header.getHeaderValueByKey("X-PJAX");
         try {
             Class c = Class.forName(Config.ControllerConfig.ControllerPackage + router.controller);
-            Constructor constructor = c.getDeclaredConstructor(OutputStream.class, RequestHeader.class, HttpSession.class, boolean.class);
-            Object obj = constructor.newInstance(os, header, session, pjax != null && pjax.equals("true"));
+            Constructor constructor = c.getDeclaredConstructor(OutputStream.class, RequestHeader.class, HttpSession.class);
+            Object obj = constructor.newInstance(os, header, session);
             Method method = c.getDeclaredMethod(router.action + Config.ControllerConfig.Action);
             method.invoke(obj);
         } catch (Exception e) {
             e.printStackTrace();
-            NotFoundError notFound = new NotFoundError(os);
-            notFound.render(request_url);
+            Errors error404 = new Errors(os, header, session);
+            error404.notFoundAction(request_url, true);
         }
     }
 

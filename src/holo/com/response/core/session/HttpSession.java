@@ -1,6 +1,5 @@
 package holo.com.response.core.session;
 
-import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,17 +8,13 @@ import java.util.Map;
  */
 public class HttpSession {
     public final static String SESSION_ID = "session_id";
+    final static int LENGTH_SESSION_ID_NAME = 10;
     public final static String Cookie = "Cookie";
     public static Map<String, Map<String, Object>> sessions = new HashMap<>();
     public Map<String, Object> this_seesion = null;
-    public String session_name = "";
+    public String session_id = "";
 
     /**
-     * changes!
-     * {@link holo.com.response.core.ResponseHttp#RenderHtml}
-     * {@link holo.com.response.core.Controller#Controller} with Index
-     * {@link holo.com.response.core.ResponseHeader}  }
-     * del {@link holo.com.response.core.Controller# renderHead}  }
      *
      * @param Cookie Http Cookie String
      */
@@ -33,26 +28,29 @@ public class HttpSession {
         if (index == -1) {
             return;
         }
-        for (int i = index+1; i < length; i++) {
-            if (Cookie.charAt(i) == ';' || i == length - 1) {
-                session_name = Cookie.substring(index, i);
+        index = index + LENGTH_SESSION_ID_NAME;
+        for (int i = index; i < length; i++) {
+            if (Cookie.charAt(i) == ';') {
+                session_id = Cookie.substring(index, i);
                 break;
+            } else if (i == length - 1) {
+                session_id = Cookie.substring(index);
             }
         }
         check();
     }
 
     /**
-     * if session value is not match, we will clear it
+     * if session value does not match, we will clear it
      */
     private void check() {
-        if (!session_name.isEmpty()) {  // && check format.
-            if (sessions.get(session_name) == null) { // add right format session to (sessions)
+        if (!session_id.isEmpty()) {  // && check format.
+            if (sessions.get(session_id) == null) { // add right format session to (sessions)
                 Map<String, Object> m = new HashMap<>();
-                sessions.put(session_name, m);
+                sessions.put(session_id, m);
             }
         } else {
-            session_name = "";
+            session_id = "";
         }
     }
 
@@ -66,15 +64,15 @@ public class HttpSession {
      */
     public Object getSession(String name) {
         if (this_seesion == null) {
-            this_seesion = sessions.get(session_name);
+            this_seesion = sessions.get(session_id);
         }
         return this_seesion.get(name);
     }
 
     public String create() {
-        this.session_name = "1234567890";// unique!
+        this.session_id = "1234567890";// unique!
         Map<String, Object> m = new HashMap<>();
-        sessions.put(session_name, m);
-        return session_name;
+        sessions.put(session_id, m);
+        return session_id;
     }
 }

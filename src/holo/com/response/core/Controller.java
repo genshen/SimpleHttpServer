@@ -17,15 +17,13 @@ import java.util.Map;
  * Created by ¸ùÉî on 2016/2/12.
  */
 public class Controller {
-    public boolean pjax;
     private GetData data_get = null;
     public BufferedOutputStream bos;
     public ResponseHeader responseHead;
     public RequestHeader requestHeader;
     public HttpSession session;
 
-    public Controller(OutputStream os,RequestHeader header, HttpSession session,boolean pjax) {
-        this.pjax = pjax;
+    public Controller(OutputStream os,RequestHeader header, HttpSession session) {
         bos = new BufferedOutputStream(os);
         this.responseHead = new ResponseHeader();
         this.session = session;
@@ -65,6 +63,7 @@ public class Controller {
         }
     }
 
+    @Deprecated
     public void render(){
         responseHead.Out(bos);
         HtmlRender html = new HtmlRender(bos);
