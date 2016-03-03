@@ -1,2 +1,2 @@
-# SimpleHttp
-this is a simple http server witch can transmission files on the disk when a http request comes
+# SimpleHttpServer
+his is a simple http server,which supports session manager,media(video,audio)transmition,file transmision
