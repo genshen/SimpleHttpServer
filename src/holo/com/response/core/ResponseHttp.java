@@ -63,7 +63,7 @@ public class ResponseHttp {
     }
 
     private void generateMedia(OutputStream os) {
-        Router router = new Router(request_url,null);
+        Router router = new Router(request_url);
         HttpSession session = new HttpSession(header.getHeaderValueByKey(HttpSession.Cookie));
         try {
             Class c = Class.forName(Config.ControllerConfig.ControllerPackage + router.controller);

@@ -14,6 +14,7 @@ public class NotFoundError {
         this.os = os;
         try {
             os.write("HTTP/1.1 404 Not Found\r\n\r\n".getBytes());
+            os.flush();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -23,6 +24,7 @@ public class NotFoundError {
         try {
             os.write(("<html><head><title>Not found Error</title></head>"
                     +"<body><h1>"+request_url + " not found</h1></body></html>").getBytes());
+            os.flush();
         } catch (IOException e) {
             e.printStackTrace();
         }

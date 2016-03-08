@@ -12,7 +12,7 @@ public class BasicData {
     public String getString(String name) {
         Object o = data.get(name);
         if (o != null) {
-            return o.toString();
+            return o.toString().replaceAll("%20"," ");// space
         }
         return "";
     }

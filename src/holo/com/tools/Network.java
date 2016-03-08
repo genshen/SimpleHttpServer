@@ -13,7 +13,7 @@ import java.util.Enumeration;
  */
 public class Network {
     public static String HOST = getLocalIp();
-    public static int HttpPort = 8080;
+    public static int HttpPort = 8888;
 
     public static String getLocalIp() {
         try {

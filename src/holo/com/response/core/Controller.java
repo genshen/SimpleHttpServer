@@ -14,7 +14,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 /**
- * Created by ¸ùÉî on 2016/2/12.
+ * Created by ï¿½ï¿½ï¿½ï¿½ on 2016/2/12.
  */
 public class Controller {
     private GetData data_get = null;
@@ -23,7 +23,7 @@ public class Controller {
     public RequestHeader requestHeader;
     public HttpSession session;
 
-    public Controller(OutputStream os,RequestHeader header, HttpSession session) {
+    public Controller(OutputStream os, RequestHeader header, HttpSession session) {
         bos = new BufferedOutputStream(os);
         this.responseHead = new ResponseHeader();
         this.session = session;
@@ -37,6 +37,22 @@ public class Controller {
         responseHead.setHeadValue("Content-Length", "0");
         responseHead.Out(bos);
     }
+
+    public void forbidden() {
+        responseHead.setState(ResponseHeader.FORBIDDEN);
+        responseHead.Out(bos);
+    }
+
+    public void notFound() {
+        responseHead.setState(ResponseHeader.NOT_FOUND);
+        responseHead.Out(bos);
+    }
+
+    public void badRequese() {
+        responseHead.setState(ResponseHeader.Bad_Request);
+        responseHead.Out(bos);
+    }
+
 
     public GetData getParams() {
         if (data_get == null) {
@@ -64,7 +80,7 @@ public class Controller {
     }
 
     @Deprecated
-    public void render(){
+    public void render() {
         responseHead.Out(bos);
         HtmlRender html = new HtmlRender(bos);
         html.renderLayout();
@@ -76,4 +92,29 @@ public class Controller {
         html.render();
     }
 
+    public void renderJSON(String json) {
+        responseHead.setHeadValue(ResponseHeader.Content_Type, "application/json; charset=utf-8");
+        responseHead.setHeadValue(ResponseHeader.Content_Length, "" + json.length());
+        responseHead.Out(bos);
+        try {
+            bos.write((json).getBytes());
+            bos.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void outFile(String path) {
+        byte[] b = new byte[1024];
+        responseHead.Out(bos);
+        try {
+            BufferedInputStream bis = new BufferedInputStream(new FileInputStream(path));
+            while ((bis.read(b)) != -1) {
+                bos.write(b);
+            }
+            bos.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

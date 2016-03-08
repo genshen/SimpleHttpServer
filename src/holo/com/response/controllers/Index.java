@@ -6,6 +6,7 @@ import holo.com.response.core.session.HttpSession;
 import holo.com.tools.json.JSONArray;
 import holo.com.tools.json.JSONObject;
 
+import java.io.File;
 import java.io.OutputStream;
 
 /**
@@ -20,10 +21,14 @@ public class Index extends Controller {
 
     public void indexAction() {
         JSONObject data = new JSONObject();
-        data.put("title", getParams().getString("hi"));
-        JSONArray array = new JSONArray("[{ text: 'Learn JavaScript' },{ text: 'Learn Vue.js' },"
-                + "{ text: 'Build Something Awesome' }]");
-        data.put("todos", array);
+        data.put("title","Main  page");
         render("index/index.html", data);
+    }
+
+    public void videoAction() {
+        JSONObject data = new JSONObject();
+        data.put("title", "Watch Video");
+        data.put("path", getParams().getString("path"));
+        render("index/video.html", data);
     }
 }
