@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * Created by ¸ùÉî on 2015/12/31.
+ * Created by cgs  on 2015/12/31.
  */
 public class HttpReader extends BufferedInputStream {
 

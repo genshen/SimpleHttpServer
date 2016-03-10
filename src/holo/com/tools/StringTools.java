@@ -1,6 +1,5 @@
 package holo.com.tools;
 
-import com.sun.javafx.geom.BoxBounds;
 import holo.com.request.RequestType;
 
 import java.io.UnsupportedEncodingException;
@@ -10,7 +9,7 @@ import java.util.Date;
 import java.util.Locale;
 
 /**
- * Created by 根深 on 2015/12/31.
+ * Created by cgs on 2015/12/31.
  */
 public class StringTools {
     /**
@@ -86,7 +85,7 @@ public class StringTools {
             return true;
         }
         try {
-            // SimpleDateFormat是非线程安全的,每次用的时候new一个,同样：formatModify方法
+            // SimpleDateFormat锟角凤拷锟竭程帮拷全锟斤拷,每锟斤拷锟矫碉拷时锟斤拷new一锟斤拷,同锟斤拷锟斤拷formatModify锟斤拷锟斤拷
             SimpleDateFormat sdf = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z", Locale.ENGLISH);
             Date d = sdf.parse(modifyTime);
             long date = d.getTime() / 1000;

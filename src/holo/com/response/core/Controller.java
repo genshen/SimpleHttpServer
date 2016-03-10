@@ -1,17 +1,15 @@
 package holo.com.response.core;
 
 import holo.com.request.RequestHeader;
-import holo.com.response.core.data.GetData;
-import holo.com.response.core.data.PostData;
+import holo.com.request.data.GetData;
+import holo.com.request.data.PostData;
+import holo.com.response.core.render.HtmlRender;
+import holo.com.response.core.render.LayoutRender;
 import holo.com.response.core.session.HttpSession;
-import holo.com.tools.StringTools;
 import holo.com.tools.URL;
 import holo.com.tools.json.JSONObject;
-import holo.com.tools.json.JSONString;
 
 import java.io.*;
-import java.util.Iterator;
-import java.util.Map;
 
 /**
  * Created by ���� on 2016/2/12.
@@ -48,7 +46,7 @@ public class Controller {
         responseHead.Out(bos);
     }
 
-    public void badRequese() {
+    public void badRequest() {
         responseHead.setState(ResponseHeader.Bad_Request);
         responseHead.Out(bos);
     }
@@ -69,6 +67,7 @@ public class Controller {
         return requestHeader.getPostData();
     }
 
+    /**just rend a string to browser*/
     public void render(String i) {
         responseHead.Out(bos);
         try {
@@ -79,17 +78,14 @@ public class Controller {
         }
     }
 
-    @Deprecated
-    public void render() {
+    public void render(String template,LayoutRender.Layout layout, JSONObject data) {
         responseHead.Out(bos);
-        HtmlRender html = new HtmlRender(bos);
-        html.renderLayout();
+        HtmlRender html = new HtmlRender(template,data,layout,bos);
+        html.render();
     }
 
     public void render(String template, JSONObject data) {
-        responseHead.Out(bos);
-        HtmlRender html = new HtmlRender(template, data, bos);
-        html.render();
+        render(template,LayoutRender.DEFAULT_LAYOUT, data);
     }
 
     public void renderJSON(String json) {

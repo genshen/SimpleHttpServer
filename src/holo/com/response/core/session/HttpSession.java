@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by ¸ùÉî on 2016/2/17.
+ * Created by cgs on 2016/2/17.
  */
 public class HttpSession {
     public final static String SESSION_ID = "session_id";
@@ -59,7 +59,7 @@ public class HttpSession {
      * {@link holo.com.response.core.Controller#Controller} Constructor,
      * session must exists.
      *
-     * @param name @NotNull
+     * @param name NotNull
      * @return Object
      */
     public Object getSession(String name) {
@@ -71,8 +71,7 @@ public class HttpSession {
 
     public String create() {
         this.session_id = "1234567890";// unique!
-        Map<String, Object> m = new HashMap<>();
-        sessions.put(session_id, m);
+        sessions.put(session_id,  new HashMap<>());
         return session_id;
     }
 }

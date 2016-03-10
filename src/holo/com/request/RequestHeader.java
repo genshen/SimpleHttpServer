@@ -1,7 +1,7 @@
 package holo.com.request;
 
 
-import holo.com.response.core.data.PostData;
+import holo.com.request.data.PostData;
 import holo.com.tools.StringTools;
 
 import java.io.*;

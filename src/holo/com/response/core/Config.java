@@ -20,12 +20,7 @@ public class Config {
     }
 
     public class View {
-        //        final static  String resource ="public/";
-        final static String VIEW = "F:/HttpFiles/core/views/";
-        final static String VIEW_LAYOUT = "F:/HttpFiles/core/views/layout/main.html";
-        final static short VIEW_LAYOUT_TOP = 3;
-        final static short VIEW_LAYOUT_HEADER = 54;
-        final static short VIEW_LAYOUT_BREAK = 8;
+        public final static String VIEW = "F:/HttpFiles/core/views/";
     }
 
 

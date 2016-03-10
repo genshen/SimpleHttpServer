@@ -9,7 +9,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 /**
- * Created by ���� on 2016/2/11.
+ * Created by cgs on 2016/2/11.
  */
 public class ResponseHeader {
     final static String Set_Cookie = "Set-Cookie";

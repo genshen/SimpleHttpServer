@@ -8,7 +8,7 @@ import java.io.File;
 import java.io.OutputStream;
 
 /**
- * Created by ¸ùÉî on 2016/3/4.
+ * Created by cgs on 2016/3/4.
  */
 public class Audio extends MediaController {
 

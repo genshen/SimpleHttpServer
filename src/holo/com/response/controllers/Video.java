@@ -8,7 +8,7 @@ import java.io.File;
 import java.io.OutputStream;
 
 /**
- * Created by ¸ùÉî on 2016/2/24.
+ * Created by cgs on 2016/2/24.
  */
 public class Video extends MediaController {
     public Video(OutputStream os, RequestHeader header,HttpSession session) {

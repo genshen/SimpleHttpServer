@@ -1,4 +1,4 @@
-package holo.com.response.core.data;
+package holo.com.request.data;
 
 import holo.com.request.HttpReader;
 import holo.com.tools.StringTools;

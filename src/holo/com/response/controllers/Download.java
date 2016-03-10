@@ -10,7 +10,7 @@ import java.io.File;
 import java.io.OutputStream;
 
 /**
- * Created by ¸ùÉî on 2016/3/2.
+ * Created by cgs on 2016/3/2.
  */
 public class Download extends Controller{
     public Download(OutputStream os, RequestHeader header,HttpSession session) {

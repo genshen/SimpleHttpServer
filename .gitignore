@@ -1,5 +1,6 @@
 *.class
 out/
+test/
 .idea/
 
 # Mobile Tools for Java (J2ME)

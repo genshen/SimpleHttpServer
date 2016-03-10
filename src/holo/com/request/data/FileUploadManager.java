@@ -1,4 +1,4 @@
-package holo.com.response.core.data;
+package holo.com.request.data;
 
 import holo.com.response.core.Config;
 
@@ -8,7 +8,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 /**
- * Created by ¸ùÉî on 2016/2/14.
+ * Created by cgs on 2016/2/14.
  */
 public class FileUploadManager {
     public static byte[] NewLine = {'\r', '\n'};

@@ -1,10 +1,12 @@
-package holo.com.response.core.data;
+package holo.com.request.data;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by 根深 on 2016/2/22.
+ * Created by cgs on 2016/2/22.
  */
 public class BasicData {
     Map<String, String> data = new HashMap<>();
@@ -12,7 +14,11 @@ public class BasicData {
     public String getString(String name) {
         Object o = data.get(name);
         if (o != null) {
-            return o.toString().replaceAll("%20"," ");// space
+            try {
+                return URLDecoder.decode(o.toString(), "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
         }
         return "";
     }

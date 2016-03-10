@@ -1,7 +1,7 @@
-package holo.com.response.core.data;
+package holo.com.request.data;
 
 /**
- * Created by 根深 on 2016/2/22.
+ * Created by cgs  on 2016/2/22.
  */
 public class GetData extends BasicData {
 

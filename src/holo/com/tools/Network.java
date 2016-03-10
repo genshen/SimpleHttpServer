@@ -1,15 +1,13 @@
 package holo.com.tools;
 
-import holo.com.request.HttpReader;
 
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
-import java.net.UnknownHostException;
 import java.util.Enumeration;
 
 /**
- * Created by ¸ùÉî on 2016/2/15.
+ * Created by cgs on 2016/2/15.
  */
 public class Network {
     public static String HOST = getLocalIp();

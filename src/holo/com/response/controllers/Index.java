@@ -10,7 +10,7 @@ import java.io.File;
 import java.io.OutputStream;
 
 /**
- * Created by ¸ùÉî on 2016/2/12.
+ * Created by cgs on 2016/2/12.
  */
 public class Index extends Controller {
     String string;

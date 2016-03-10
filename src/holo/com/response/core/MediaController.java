@@ -8,7 +8,7 @@ import java.io.OutputStream;
 import java.io.RandomAccessFile;
 
 /**
- * Created by ¸ùÉî on 2016/2/24.
+ * Created by cgs on 2016/2/24.
  */
 public class MediaController extends Controller {
     final static String Content_Range = "Content-Range";
@@ -40,7 +40,7 @@ public class MediaController extends Controller {
      */
     public void pullOut(File file) {
         if (!responseAble) {
-            badRequese();
+            badRequest();
             return;
         }
         long length = file.length();
