@@ -26,6 +26,7 @@ public class Errors extends Controller {
         }
         JSONObject data = new JSONObject();
         try {
+            data.put("title", "not found");
             data.put("url", url);
         } catch (JSONException e) {
             e.printStackTrace();

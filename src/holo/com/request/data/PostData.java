@@ -9,12 +9,12 @@ import java.util.Map;
  * Created by cgs on 2016/2/14.
  */
 public class PostData extends BasicData{
-    final static int FileReaderBufferSize = 1024;
-    final static String ContentDisposition = "Content-Disposition";
-    String multiDivLine = "";
-    long dataLength;
-    boolean hasMutilReceived = true;
-    HttpReader reader;
+    private final static int FileReaderBufferSize = 1024;
+    private final static String ContentDisposition = "Content-Disposition";
+    private String multiDivLine = "";
+    private long dataLength;
+    private boolean hasMultiReceived = true;
+    private HttpReader reader;
 
     public PostData(HttpReader reader, String contentType, long dataLength) {
         this.reader = reader;
@@ -23,7 +23,7 @@ public class PostData extends BasicData{
             int position = contentType.lastIndexOf("boundary");
             if (position == -1) return;
             multiDivLine = contentType.substring(position + 9); // 9 = "boundary".length()+ 1    /* char = */
-            hasMutilReceived = false;
+            hasMultiReceived = false;
         } else {
             setNormalData();
         }
@@ -107,8 +107,10 @@ public class PostData extends BasicData{
      * receive Multipart data(usually,it's file data)
      */
     private void fill() {
-        if (!hasMutilReceived)
+        if (!hasMultiReceived){
             setMultipartField();
+            hasMultiReceived = true;
+        }
     }
 
     public Map getAllData() {

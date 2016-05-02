@@ -1,5 +1,7 @@
 package holo.com.response.core.render;
 
+import holo.com.response.core.Config;
+
 import java.io.*;
 
 /**
@@ -7,8 +9,8 @@ import java.io.*;
  */
 public class LayoutRender {
     /*you can add other layout here,just like DEFAULT_LAYOUT */
-    public final static Layout DEFAULT_LAYOUT = new Layout("F:/HttpFiles/core/views/layout/main.html",
-            new int[]{3, 54, 8});
+    public final static Layout DEFAULT_LAYOUT = new Layout(Config.View.LAYOUT + "main.html",
+            new int[]{3, 9, 6});
     final static byte[] newline = {'\r', '\n'};
     int which = 0;
     Layout layout;

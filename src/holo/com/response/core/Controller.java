@@ -12,7 +12,7 @@ import holo.com.tools.json.JSONObject;
 import java.io.*;
 
 /**
- * Created by ���� on 2016/2/12.
+ * Created by 储根深 on 2016/2/12.
  */
 public class Controller {
     private GetData data_get = null;
@@ -32,6 +32,13 @@ public class Controller {
     public void redirect(String controller, String action) {
         responseHead.setState(ResponseHeader.Redirect);
         responseHead.setHeadValue("Location", URL.url(controller, action));
+        responseHead.setHeadValue("Content-Length", "0");
+        responseHead.Out(bos);
+    }
+
+    public void redirect(String url) {
+        responseHead.setState(ResponseHeader.Redirect);
+        responseHead.setHeadValue("Location", url);
         responseHead.setHeadValue("Content-Length", "0");
         responseHead.Out(bos);
     }
@@ -67,7 +74,9 @@ public class Controller {
         return requestHeader.getPostData();
     }
 
-    /**just rend a string to browser*/
+    /**
+     * just rend a string to browser
+     */
     public void render(String i) {
         responseHead.Out(bos);
         try {
@@ -78,14 +87,14 @@ public class Controller {
         }
     }
 
-    public void render(String template,LayoutRender.Layout layout, JSONObject data) {
+    public void render(String template, LayoutRender.Layout layout, JSONObject data) {
         responseHead.Out(bos);
-        HtmlRender html = new HtmlRender(template,data,layout,bos);
+        HtmlRender html = new HtmlRender(template, data, layout, bos);
         html.render();
     }
 
     public void render(String template, JSONObject data) {
-        render(template,LayoutRender.DEFAULT_LAYOUT, data);
+        render(template, LayoutRender.DEFAULT_LAYOUT, data);
     }
 
     public void renderJSON(String json) {

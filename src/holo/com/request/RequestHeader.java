@@ -97,7 +97,7 @@ public class RequestHeader {
                 isHttp = true;
                 method = setMethod(Re[0]);
                 String getUrl[] = Re[1].split("[?]", 2);
-                requestUri = StringTools.NormalizUrl(getUrl[0]);
+                requestUri = StringTools.NormalizeUrl(getUrl[0]);
                 requestType = StringTools.getRequestType(requestUri);
                 requestTail = getUrl.length == 2 ? getUrl[1] : "";
             }

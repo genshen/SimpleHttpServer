@@ -19,7 +19,7 @@ public class StringTools {
      *
      * @param url
      */
-    public static String NormalizUrl(String url) {
+    public static String NormalizeUrl(String url) {
         char u[] = url.toCharArray();
         if (u[u.length - 1] == '/') {
             return url + "index.html";
@@ -85,7 +85,7 @@ public class StringTools {
             return true;
         }
         try {
-            // SimpleDateFormat�Ƿ��̰߳�ȫ��,ÿ���õ�ʱ��newһ��,ͬ����formatModify����
+            // SimpleDateFormat是非线程安全的,每次用的时候new一个,同样：formatModify方法
             SimpleDateFormat sdf = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z", Locale.ENGLISH);
             Date d = sdf.parse(modifyTime);
             long date = d.getTime() / 1000;

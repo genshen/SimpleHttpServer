@@ -21,6 +21,7 @@ public class Config {
 
     public class View {
         public final static String VIEW = "F:/HttpFiles/core/views/";
+        public final static String LAYOUT = "F:/HttpFiles/core/views/layout/";
     }
 
 

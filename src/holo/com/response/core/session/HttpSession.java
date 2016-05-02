@@ -2,6 +2,7 @@ package holo.com.response.core.session;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 /**
  * Created by cgs on 2016/2/17.
@@ -15,7 +16,6 @@ public class HttpSession {
     public String session_id = "";
 
     /**
-     *
      * @param Cookie Http Cookie String
      */
     //Cookie中没有,则需要setCookie;
@@ -54,6 +54,16 @@ public class HttpSession {
         }
     }
 
+    public void setSession(String name, Object obj) {
+        if (name == null || name.isEmpty()) {
+            return;
+        }
+        if (this_seesion == null) {
+            this_seesion = sessions.get(session_id);
+        }
+        this_seesion.put(name, obj);
+    }
+
     /**
      * when call this function after calling
      * {@link holo.com.response.core.Controller#Controller} Constructor,
@@ -69,9 +79,42 @@ public class HttpSession {
         return this_seesion.get(name);
     }
 
+    public boolean getSessionBoolean(String name, boolean defaultValue) {
+        Object o = getSession(name);
+        if (o == null) {
+            return defaultValue;
+        } else {
+            return (boolean) o;
+        }
+    }
+
+    public int getSessionInt(String name, int defaultValue) {
+        Object o = getSession(name);
+        if (o == null) {
+            return defaultValue;
+        } else {
+            return (int) o;
+        }
+    }
+
     public String create() {
-        this.session_id = "1234567890";// unique!
-        sessions.put(session_id,  new HashMap<>());
+        this.session_id = getRandomString(8); // unique!
+        sessions.put(session_id, new HashMap<>());
         return session_id;
+    }
+
+    final static String str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+    public static String getRandomString(int length) {
+
+        Random random = new Random();
+        StringBuffer sb = new StringBuffer();
+
+        for (int i = 0; i < length; ++i) {
+            int number = random.nextInt(62);//[0,62)
+
+            sb.append(str.charAt(number));
+        }
+        return sb.toString();
     }
 }

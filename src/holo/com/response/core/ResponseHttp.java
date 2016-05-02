@@ -16,21 +16,21 @@ import java.lang.reflect.Method;
  * Created by cgs on 2015/12/31.
  */
 public class ResponseHttp {
-    String request_url;
+    String requestUrl;
     String BasePath = Config.BasePath;
     RequestHeader header;
     final RequestType requestType;
 
     public ResponseHttp(RequestHeader rh) {
         header = rh;
-        request_url = rh.getRequestLineFirst().getRequestUri();
+        requestUrl = rh.getRequestLineFirst().getRequestUri();
         requestType = rh.getRequestLineFirst().getRequestType();
     }
 
     public void startResponse(OutputStream outputStream) {
         if (requestType != RequestType.MEDIA) {
             BuiltTextResponse(outputStream);
-        }else if (!request_url.startsWith(Config.AssetsFileStart)) {
+        }else if (!requestUrl.startsWith(Config.AssetsFileStart)) {
             //medias generated dynamically
             generateMedia(outputStream);
         } else {  //medias  in assets or
@@ -39,7 +39,7 @@ public class ResponseHttp {
     }
 
     private void BuiltMediaResponse(OutputStream os) {
-        File file = new File(BasePath + request_url);
+        File file = new File(BasePath + requestUrl);
         if (!file.exists()) {
             new NotFoundError(os);
             return;
@@ -59,11 +59,11 @@ public class ResponseHttp {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println("send finished\t" + request_url);
+        System.out.println("send finished\t" + requestUrl);
     }
 
     private void generateMedia(OutputStream os) {
-        Router router = new Router(request_url);
+        Router router = new Router(requestUrl);
         HttpSession session = new HttpSession(header.getHeaderValueByKey(HttpSession.Cookie));
         try {
             Class c = Class.forName(Config.ControllerConfig.ControllerPackage + router.controller);
@@ -85,7 +85,7 @@ public class ResponseHttp {
             return;
         }
 
-        File file = new File(BasePath + request_url);
+        File file = new File(BasePath + requestUrl);
         if (!file.exists()) {
             new NotFoundError(os);
             return;
@@ -107,11 +107,11 @@ public class ResponseHttp {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println("send finished\t" + request_url);
+        System.out.println("send finished\t" + requestUrl);
     }
 
     private void RenderHtml(OutputStream os) {
-        Router router = new Router(request_url);
+        Router router = new Router(requestUrl);
         HttpSession session = new HttpSession(header.getHeaderValueByKey(HttpSession.Cookie));
         try {
             Class c = Class.forName(Config.ControllerConfig.ControllerPackage + router.controller);
@@ -122,7 +122,7 @@ public class ResponseHttp {
         } catch (Exception e) {
             e.printStackTrace();
             Errors error404 = new Errors(os, header, session);
-            error404.notFoundAction(request_url, true);
+            error404.notFoundAction(requestUrl, true);
         }
     }
 
