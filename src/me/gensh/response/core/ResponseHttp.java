@@ -1,12 +1,12 @@
 package me.gensh.response.core;
 
-
 import me.gensh.request.RequestHeader;
 import me.gensh.request.RequestType;
 import me.gensh.response.controllers.Errors;
 import me.gensh.response.core.session.HttpSession;
 import me.gensh.response.error.NotFoundError;
-import me.gensh.tools.StringTools;
+import me.gensh.router.*;
+import me.gensh.utils.StringTools;
 
 import java.io.*;
 import java.lang.reflect.Constructor;
@@ -28,17 +28,18 @@ public class ResponseHttp {
     }
 
     public void startResponse(OutputStream outputStream) {
-        if (requestType != RequestType.MEDIA) {
-            BuiltTextResponse(outputStream);
-        }else if (!requestUrl.startsWith(Config.AssetsFileStart)) {
-            //medias generated dynamically
-            generateMedia(outputStream);
-        } else {  //medias  in assets or
-            BuiltMediaResponse(outputStream);
+        if (requestUrl.startsWith(Config.AssetsFilePrefix)) {
+            BuiltStaticResponse(outputStream);
+        } else {
+            if (requestType == RequestType.MEDIA) {
+                generateMedia(outputStream);
+            } else {
+                renderHtml(outputStream);
+            }
         }
     }
 
-    private void BuiltMediaResponse(OutputStream os) {
+    private void BuiltStaticResponse(OutputStream os) {
         File file = new File(BasePath + requestUrl);
         if (!file.exists()) {
             new NotFoundError(os);
@@ -63,64 +64,23 @@ public class ResponseHttp {
     }
 
     private void generateMedia(OutputStream os) {
-        Router router = new Router(requestUrl);
+        ResponseMediaInterface ri = me.gensh.router.Router.mediaRouters.get("/");
         HttpSession session = new HttpSession(header.getHeaderValueByKey(HttpSession.Cookie));
-        try {
-            Class c = Class.forName(Config.ControllerConfig.ControllerPackage + router.controller);
-            Constructor constructor = c.getDeclaredConstructor(OutputStream.class, RequestHeader.class, HttpSession.class);
-            Object obj = constructor.newInstance(os, header, session);
-            Method method = c.getDeclaredMethod(router.action + Config.ControllerConfig.Media);
-            method.invoke(obj);
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (ri != null) {
+            MediaController con = new MediaController(os, header, session);
+            ri.OnResponse(con);
+        }else{
             new NotFoundError(os);
         }
     }
 
-    final byte[] newline = {'\r', '\n'};
-
-    private void BuiltTextResponse(OutputStream os) {
-        if (requestType == RequestType.HTML) {
-            RenderHtml(os);
-            return;
-        }
-
-        File file = new File(BasePath + requestUrl);
-        if (!file.exists()) {
-            new NotFoundError(os);
-            return;
-        }
-        try {
-            long lastModify = file.lastModified();
-            if (CheckModify(os, lastModify)) {
-                InputStreamReader is_r = new InputStreamReader(new FileInputStream(file), "UTF-8");
-                BufferedReader br_r = new BufferedReader(is_r);
-                String line;
-                os.write(("HTTP/1.1 200 OK\r\nLast-Modified: " + StringTools.formatModify(lastModify) + "\r\n\r\n").getBytes());
-                while ((line = br_r.readLine()) != null) {
-                    os.write(line.getBytes("UTF-8"));
-                    os.write(newline);
-                }
-                br_r.close();
-                is_r.close();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        System.out.println("send finished\t" + requestUrl);
-    }
-
-    private void RenderHtml(OutputStream os) {
-        Router router = new Router(requestUrl);
+    private void renderHtml(OutputStream os) {
+        ResponseInterface ri = me.gensh.router.Router.routers.get("/");
         HttpSession session = new HttpSession(header.getHeaderValueByKey(HttpSession.Cookie));
-        try {
-            Class c = Class.forName(Config.ControllerConfig.ControllerPackage + router.controller);
-            Constructor constructor = c.getDeclaredConstructor(OutputStream.class, RequestHeader.class, HttpSession.class);
-            Object obj = constructor.newInstance(os, header, session);
-            Method method = c.getDeclaredMethod(router.action + Config.ControllerConfig.Action);
-            method.invoke(obj);
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (ri != null) {
+            Controller con = new Controller(os, header, session);
+            ri.OnResponse(con);
+        }else{
             Errors error404 = new Errors(os, header, session);
             error404.notFoundAction(requestUrl, true);
         }

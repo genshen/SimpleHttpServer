@@ -1,6 +1,7 @@
 package me.gensh;
 
-import me.gensh.tools.Network;
+import me.gensh.router.Router;
+import me.gensh.utils.Network;
 
 import java.net.ServerSocket;
 import java.net.Socket;

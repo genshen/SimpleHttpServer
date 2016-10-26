@@ -1,6 +1,6 @@
 package me.gensh.response.core;
 
-import holo.com.response.core.session.HttpSession;
+import me.gensh.response.core.session.HttpSession;
 
 import java.io.BufferedOutputStream;
 import java.io.IOException;

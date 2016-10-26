@@ -1,4 +1,4 @@
-package me.gensh.tools.json;
+package me.gensh.utils.json;
 
 import java.io.IOException;
 import java.io.Writer;

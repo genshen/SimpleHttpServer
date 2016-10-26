@@ -1,37 +1,32 @@
 package me.gensh.response.controllers;
 
-import holo.com.request.RequestHeader;
-import holo.com.response.core.Controller;
-import holo.com.response.core.session.HttpSession;
-import holo.com.tools.json.JSONArray;
-import holo.com.tools.json.JSONObject;
+import me.gensh.request.RequestHeader;
+import me.gensh.response.core.Controller;
+import me.gensh.response.core.ResponseInterface;
+import me.gensh.response.core.session.HttpSession;
+import me.gensh.utils.json.JSONArray;
+import me.gensh.utils.json.JSONObject;
 
-import java.io.File;
 import java.io.OutputStream;
 import java.util.ArrayList;
 
 /**
  * Created by cgs on 2016/2/12.
  */
-public class Index extends Controller {
-    String string;
+public class Index {
 
-    public Index(OutputStream os, RequestHeader header, HttpSession session) {
-        super(os, header, session);
-    }
-
-    public void indexAction() {
-        String name = getParams().getString("name");
+    public static ResponseInterface indexAction = context -> {
+        String name = context.getParams().getString("name");
         JSONObject data = new JSONObject();
-        if(name.isEmpty()){
+        if (name.isEmpty()) {
             name = "World";
         }
         data.put("title", "Main  page");
         data.put("name", name);
-        render("index/index.html", data);
-    }
+        context.render("index/index.html", data);
+    };
 
-    public void imagesAction() {
+    public static ResponseInterface imageAction = context -> {
         JSONObject data = new JSONObject();
         data.put("title", "Images");
         ArrayList<String> list = new ArrayList<>();
@@ -43,16 +38,17 @@ public class Index extends Controller {
             }
         }
         data.put("images", new JSONArray(list));
-        render("index/images.html", data);
-    }
+        context.render("index/images.html", data);
+    };
 
-    public void statusAction() {
+    public static ResponseInterface statusAction = context -> {
         JSONObject json = new JSONObject();
-        json.put("title","status TEST");
-        render("index/status.html",  json);
-    }
+        json.put("title", "status TEST");
+        context.render("index/status.html", json);
+    };
 
-    public void redirectAction() {
-        redirect("https://baidu.com");
-    }
+    public static ResponseInterface redirectAction = context -> {
+        context.redirect("https://baidu.com");
+    };
+
 }

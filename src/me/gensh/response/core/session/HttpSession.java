@@ -18,7 +18,6 @@ public class HttpSession {
     /**
      * @param Cookie Http Cookie String
      */
-    //Cookie��û��,����ҪsetCookie;
     public HttpSession(String Cookie) {
         if (Cookie == null) { //set-Cookie:
             return;

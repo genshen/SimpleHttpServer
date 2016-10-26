@@ -1,12 +1,12 @@
 package me.gensh.response.core;
 
 /**
- * Created by ���� on 2016/2/11.
+ * Created by gensh on 2016/2/11.
  */
 public class Config {
     public final static String BasePath = "F:/HttpFiles";
     public final static String TempPath = "F:/HttpFiles/temp/";
-    public final static String AssetsFileStart = "/public";
+    public final static String AssetsFilePrefix = "/public";
 
     public class Router {
         final static String defaultController = "Index";

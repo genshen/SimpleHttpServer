@@ -1,4 +1,4 @@
-package me.gensh.tools.json;
+package me.gensh.utils.json;
 
 /*
  Copyright (c) 2002 JSON.org

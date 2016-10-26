@@ -1,10 +1,9 @@
 package me.gensh.response.controllers;
 
-import holo.com.request.RequestHeader;
-import holo.com.response.core.Config;
-import holo.com.response.core.MediaController;
-import holo.com.response.core.session.HttpSession;
-import holo.com.tools.json.JSONObject;
+import me.gensh.request.RequestHeader;
+import me.gensh.response.core.*;
+import me.gensh.response.core.session.HttpSession;
+import me.gensh.utils.json.JSONObject;
 
 import java.io.File;
 import java.io.OutputStream;
@@ -17,20 +16,20 @@ public class Media extends MediaController {
         super(os, header, session);
     }
 
-    public void indexAction() {
+    public static ResponseMediaInterface IndexAction = context -> {
         JSONObject json = new JSONObject();
         json.put("title", "Video And Audio");
-        render("media/index.html", json);
-    }
+        context.render("media/index.html", json);
+    };
 
-    public void videoMedia() {
-        File f = new File(Config.BasePath + getParams().getString("path"));
-        pullOut(f);
-    }
+    public static ResponseMediaInterface videoMedia = context -> {
+        File f = new File(Config.BasePath + context.getParams().getString("path"));
+        context.pullOut(f);
+    };
 
-    public void audioMedia() {
-        File f = new File(Config.BasePath + getParams().getString("path"));
-        pullOut(f);
-    }
+    public static ResponseMediaInterface audioMedia = context -> {
+        File f = new File(Config.BasePath + context.getParams().getString("path"));
+        context.pullOut(f);
+    };
 
 }

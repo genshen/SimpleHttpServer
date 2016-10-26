@@ -1,6 +1,6 @@
 package me.gensh.request.data;
 
-import holo.com.response.core.Config;
+import me.gensh.response.core.Config;
 
 import java.io.BufferedOutputStream;
 import java.io.FileNotFoundException;

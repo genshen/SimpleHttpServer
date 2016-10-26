@@ -1,4 +1,4 @@
-package me.gensh.tools;
+package me.gensh.utils;
 
 /**
  * Created by cgs on 2016/2/19.

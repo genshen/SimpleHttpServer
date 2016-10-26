@@ -3,6 +3,7 @@ package me.gensh.response.core;
 /**
  * Created by cgs on 2016/1/2.
  */
+@Deprecated
 public class Router {
     final static char RouteDiv = '/';
     final static char RoutePoint = '.';

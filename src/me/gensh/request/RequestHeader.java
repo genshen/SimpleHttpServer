@@ -2,7 +2,7 @@ package me.gensh.request;
 
 
 import me.gensh.request.data.PostData;
-import me.gensh.tools.StringTools;
+import me.gensh.utils.StringTools;
 
 import java.io.*;
 import java.net.Socket;

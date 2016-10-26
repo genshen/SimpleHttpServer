@@ -1,4 +1,4 @@
-package me.gensh.tools;
+package me.gensh.utils;
 
 import me.gensh.request.RequestType;
 

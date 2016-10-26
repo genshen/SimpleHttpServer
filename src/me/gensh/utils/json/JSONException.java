@@ -1,4 +1,4 @@
-package me.gensh.tools.json;
+package me.gensh.utils.json;
 
 /**
  * The JSONException is thrown by the JSON.org classes when things are amiss.

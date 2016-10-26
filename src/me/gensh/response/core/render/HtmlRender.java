@@ -1,8 +1,8 @@
 package me.gensh.response.core.render;
 
-import holo.com.response.core.Config;
-import holo.com.tools.Network;
-import holo.com.tools.json.JSONObject;
+import me.gensh.response.core.Config;
+import me.gensh.utils.Network;
+import me.gensh.utils.json.JSONObject;
 
 import java.io.*;
 

@@ -1,7 +1,7 @@
 package me.gensh.request.data;
 
 import me.gensh.request.HttpReader;
-import me.gensh.tools.StringTools;
+import me.gensh.utils.StringTools;
 
 import java.util.Map;
 
