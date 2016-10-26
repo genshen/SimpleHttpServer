@@ -5,21 +5,18 @@ import me.gensh.request.RequestType;
 import me.gensh.response.controllers.Errors;
 import me.gensh.response.core.session.HttpSession;
 import me.gensh.response.error.NotFoundError;
-import me.gensh.router.*;
+import me.gensh.router.Router;
 import me.gensh.utils.StringTools;
 
 import java.io.*;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
 
 /**
  * Created by cgs on 2015/12/31.
  */
 public class ResponseHttp {
-    String requestUrl;
-    String BasePath = Config.BasePath;
-    RequestHeader header;
-    final RequestType requestType;
+    private String requestUrl;
+    private RequestHeader header;
+    private final RequestType requestType;
 
     public ResponseHttp(RequestHeader rh) {
         header = rh;
@@ -40,7 +37,8 @@ public class ResponseHttp {
     }
 
     private void BuiltStaticResponse(OutputStream os) {
-        File file = new File(BasePath + requestUrl);
+        String basePath = Config.BasePath;
+        File file = new File(basePath + requestUrl);
         if (!file.exists()) {
             new NotFoundError(os);
             return;
@@ -75,7 +73,7 @@ public class ResponseHttp {
     }
 
     private void renderHtml(OutputStream os) {
-        ResponseInterface ri = me.gensh.router.Router.routers.get("/");
+        ResponseInterface ri = Router.routers.get("/");
         HttpSession session = new HttpSession(header.getHeaderValueByKey(HttpSession.Cookie));
         if (ri != null) {
             Controller con = new Controller(os, header, session);
