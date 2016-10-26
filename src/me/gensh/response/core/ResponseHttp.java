@@ -25,7 +25,7 @@ public class ResponseHttp {
     }
 
     public void startResponse(OutputStream outputStream) {
-        if (requestUrl.startsWith(Config.AssetsFilePrefix)) {
+        if (requestUrl.startsWith(Config.StaticFilePrefix)) {
             BuiltStaticResponse(outputStream);
         } else {
             if (requestType == RequestType.MEDIA) {
@@ -37,8 +37,7 @@ public class ResponseHttp {
     }
 
     private void BuiltStaticResponse(OutputStream os) {
-        String basePath = Config.BasePath;
-        File file = new File(basePath + requestUrl);
+        File file = new File(Config.BasePath + requestUrl);
         if (!file.exists()) {
             new NotFoundError(os);
             return;
@@ -67,7 +66,7 @@ public class ResponseHttp {
         if (ri != null) {
             MediaController con = new MediaController(os, header, session);
             ri.OnResponse(con);
-        }else{
+        } else {
             new NotFoundError(os);
         }
     }
@@ -78,9 +77,15 @@ public class ResponseHttp {
         if (ri != null) {
             Controller con = new Controller(os, header, session);
             ri.OnResponse(con);
-        }else{
+            if(Config.DebugMod){   //debug mod
+                System.out.println(requestUrl+"\n"+con.responseHead.first_line);
+            }
+        } else {
             Errors error404 = new Errors(os, header, session);
             error404.notFoundAction(requestUrl, true);
+            if(Config.DebugMod){  //debug mod
+                System.out.println(requestUrl+"\n"+error404.responseHead.first_line);
+            }
         }
     }
 

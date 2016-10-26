@@ -12,6 +12,7 @@ import java.io.OutputStream;
 /**
  * Created by cgs on 2016/1/1.
  */
+
 public class Errors extends Controller {
 
     public Errors(OutputStream os, RequestHeader header, HttpSession session) {

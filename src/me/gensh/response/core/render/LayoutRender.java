@@ -8,10 +8,7 @@ import java.io.*;
  * Created by 根深 on 2016/3/10.
  */
 public class LayoutRender {
-    /*you can add other layout here,just like DEFAULT_LAYOUT */
-    public final static Layout DEFAULT_LAYOUT = new Layout(Config.View.LAYOUT + "main.html",
-            new int[]{3, 9, 6});
-    final static byte[] newline = {'\r', '\n'};
+    private final static byte[] newline = {'\r', '\n'};
     int which = 0;
     Layout layout;
     BufferedOutputStream bos;
@@ -28,7 +25,7 @@ public class LayoutRender {
         }
     }
 
-    public void continueRender() {
+    void continueRender() {
         if (which >= layout.layout_pieces.length) {
             return;
         }
@@ -45,7 +42,7 @@ public class LayoutRender {
         which++;
     }
 
-    public void finishRender() {
+    void finishRender() {
         String line;
         try {
             while ((line = br_r.readLine()) != null) {
@@ -62,7 +59,7 @@ public class LayoutRender {
         String layout_path;
         int[] layout_pieces;
 
-        private Layout(String path, int[] pieces) {
+        Layout(String path, int[] pieces) {
             layout_path = path;
             layout_pieces = pieces;
         }

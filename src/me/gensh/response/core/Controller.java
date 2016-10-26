@@ -4,6 +4,7 @@ import me.gensh.request.RequestHeader;
 import me.gensh.request.data.GetData;
 import me.gensh.request.data.PostData;
 import me.gensh.response.core.render.HtmlRender;
+import me.gensh.response.core.render.HtmlRenderInstance;
 import me.gensh.response.core.render.LayoutRender;
 import me.gensh.response.core.session.HttpSession;
 import me.gensh.utils.URL;
@@ -58,7 +59,6 @@ public class Controller {
         responseHead.Out(bos);
     }
 
-
     public GetData getParams() {
         if (data_get == null) {
             data_get = new GetData(requestHeader.getRequestLineFirst().requestTail);
@@ -87,14 +87,16 @@ public class Controller {
         }
     }
 
-    public void render(String template, LayoutRender.Layout layout, JSONObject data) {
-        responseHead.Out(bos);
-        HtmlRender html = new HtmlRender(template, data, layout, bos);
+    public void render(String template, JSONObject data) {
+        HtmlRenderInstance html = new HtmlRenderInstance(template, data, bos);
         html.render();
     }
 
-    public void render(String template, JSONObject data) {
-        render(template, LayoutRender.DEFAULT_LAYOUT, data);
+    public void render(String template, HtmlRender htmlRender, JSONObject data) {
+        htmlRender.setTemplate(template);
+        htmlRender.setData(data);
+        htmlRender.bindOutputStream(bos);
+        htmlRender.render();
     }
 
     public void renderJSON(String json) {
@@ -111,7 +113,7 @@ public class Controller {
 
     public void outFile(String path) {
         byte[] b = new byte[1024];
-        responseHead.Out(bos);
+        responseHead.Out(bos); //todo add file length
         try {
             BufferedInputStream bis = new BufferedInputStream(new FileInputStream(path));
             while ((bis.read(b)) != -1) {
