@@ -7,7 +7,7 @@ public class Config {
     public final static String BasePath = "E:/Workspace/Java/SimpleHttpServer";
     public final static String TempPath = "F:/HttpFiles/temp/";
     public final static String StaticFilePrefix = "/static";
-    public final static Boolean DebugMod = true;
+    public final static Boolean DebugMode = true;
 
     @Deprecated
     private class Router {
@@ -24,7 +24,6 @@ public class Config {
 
     final static public class View {
         public final static String VIEW = "/views/";
-        public final static String LAYOUT = "/views/layout/";
     }
 
 }

@@ -3,9 +3,8 @@ package me.gensh.response.core;
 import me.gensh.request.RequestHeader;
 import me.gensh.request.data.GetData;
 import me.gensh.request.data.PostData;
+import me.gensh.response.core.render.DefaultHtmlRenderInstance;
 import me.gensh.response.core.render.HtmlRender;
-import me.gensh.response.core.render.HtmlRenderInstance;
-import me.gensh.response.core.render.LayoutRender;
 import me.gensh.response.core.session.HttpSession;
 import me.gensh.utils.URL;
 import me.gensh.utils.json.JSONObject;
@@ -87,8 +86,8 @@ public class Controller {
         }
     }
 
-    public void render(String template, JSONObject data) {
-        HtmlRenderInstance html = new HtmlRenderInstance(template, data, bos);
+    public void render(String template, Object data) {
+        DefaultHtmlRenderInstance html = new DefaultHtmlRenderInstance(template, data, bos);
         html.render();
     }
 

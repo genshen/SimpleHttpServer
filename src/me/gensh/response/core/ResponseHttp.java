@@ -1,7 +1,6 @@
 package me.gensh.response.core;
 
 import me.gensh.request.RequestHeader;
-import me.gensh.request.RequestType;
 import me.gensh.response.controllers.Errors;
 import me.gensh.response.core.session.HttpSession;
 import me.gensh.response.error.NotFoundError;
@@ -16,22 +15,21 @@ import java.io.*;
 public class ResponseHttp {
     private String requestUrl;
     private RequestHeader header;
-    private final RequestType requestType;
 
     public ResponseHttp(RequestHeader rh) {
         header = rh;
         requestUrl = rh.getRequestLineFirst().getRequestUri();
-        requestType = rh.getRequestLineFirst().getRequestType();
     }
 
     public void startResponse(OutputStream outputStream) {
         if (requestUrl.startsWith(Config.StaticFilePrefix)) {
             BuiltStaticResponse(outputStream);
-        } else {
-            if (requestType == RequestType.MEDIA) {
-                generateMedia(outputStream);
-            } else {
-                renderHtml(outputStream);
+        } else if (!renderHtml(outputStream) && !generateMedia(outputStream)) {
+            HttpSession session = new HttpSession(header.getHeaderValueByKey(HttpSession.Cookie));
+            Errors error404 = new Errors(outputStream, header, session);
+            error404.notFoundAction(requestUrl, true);
+            if (Config.DebugMode) {  //debug mod
+                System.out.println(requestUrl + "\n" + error404.responseHead.first_line);
             }
         }
     }
@@ -60,33 +58,32 @@ public class ResponseHttp {
         System.out.println("send finished\t" + requestUrl);
     }
 
-    private void generateMedia(OutputStream os) {
+    private boolean generateMedia(OutputStream os) {
         ResponseMediaInterface ri = me.gensh.router.Router.mediaRouters.get("/");
-        HttpSession session = new HttpSession(header.getHeaderValueByKey(HttpSession.Cookie));
         if (ri != null) {
+            HttpSession session = new HttpSession(header.getHeaderValueByKey(HttpSession.Cookie));
             MediaController con = new MediaController(os, header, session);
             ri.OnResponse(con);
-        } else {
-            new NotFoundError(os);
+            if (Config.DebugMode) {   //debug mod
+                System.out.println(requestUrl + "\n" + con.responseHead.first_line);
+            }
+            return true;
         }
+        return false;
     }
 
-    private void renderHtml(OutputStream os) {
+    private boolean renderHtml(OutputStream os) {
         ResponseInterface ri = Router.routers.get("/");
-        HttpSession session = new HttpSession(header.getHeaderValueByKey(HttpSession.Cookie));
         if (ri != null) {
+            HttpSession session = new HttpSession(header.getHeaderValueByKey(HttpSession.Cookie));
             Controller con = new Controller(os, header, session);
             ri.OnResponse(con);
-            if(Config.DebugMod){   //debug mod
-                System.out.println(requestUrl+"\n"+con.responseHead.first_line);
+            if (Config.DebugMode) {   //debug mod
+                System.out.println(requestUrl + "\n" + con.responseHead.first_line);
             }
-        } else {
-            Errors error404 = new Errors(os, header, session);
-            error404.notFoundAction(requestUrl, true);
-            if(Config.DebugMod){  //debug mod
-                System.out.println(requestUrl+"\n"+error404.responseHead.first_line);
-            }
+            return true;
         }
+        return false;
     }
 
     private boolean CheckModify(OutputStream os, long lastModify) {

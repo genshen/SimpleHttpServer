@@ -79,7 +79,6 @@ public class RequestHeader {
         String requestUri;
         public String requestTail = "";
         boolean isHttp = false;
-        RequestType requestType;
         byte method;
         final static byte GET = 0;
         public final static byte POST = 1;
@@ -88,7 +87,7 @@ public class RequestHeader {
          * the first line just like {@code GET /bootstrap/css/bootstrap.min.css HTTP/1.1}
          *
          * @param s the first line string
-         *          set method requestType(html,json,css,js,medal...),url
+         *          set method,url
          */
         public RequestLineFirst(String s) {
             if (s == null) return;
@@ -98,7 +97,6 @@ public class RequestHeader {
                 method = setMethod(Re[0]);
                 String getUrl[] = Re[1].split("[?]", 2);
                 requestUri = StringTools.NormalizeUrl(getUrl[0]);
-                requestType = StringTools.getRequestType(requestUri);
                 requestTail = getUrl.length == 2 ? getUrl[1] : "";
             }
         }
@@ -129,10 +127,6 @@ public class RequestHeader {
 
         public boolean isHttp() {
             return isHttp;
-        }
-
-        public RequestType getRequestType() {
-            return requestType;
         }
     }
 }

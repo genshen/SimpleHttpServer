@@ -1,7 +1,5 @@
 package me.gensh.utils;
 
-import me.gensh.request.RequestType;
-
 import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -13,44 +11,24 @@ import java.util.Locale;
  */
 public class StringTools {
     /**
-     * /good/  -> /good/index.html
-     * /good  -> /good/index.html
-     * /good/t.html -> no change
+     * /good/t/  -> /good/t/
+     * /good/t  -> /good/t/
+     * good/t  -> /good/t
      *
-     * @param url
+     * @param url url
      */
     public static String NormalizeUrl(String url) {
         char u[] = url.toCharArray();
-        if (u[u.length - 1] == '/') {
-            return url + "index.html";
-        } else {
-            for (int i = u.length - 1; i >= 0 && u[i] != '/'; i--) {
-                if (u[i] == '.' && i > 1 && u[i - 1] != '/') { //not like  [node/.html]
-                    return url;
-                }
-            }
-            return url + "/index.html";
+        if (u.length > 0 && u[0] != '/') {
+            return "/" + url;
+        } else if (u.length >= 2 && u[u.length - 1] == '/') {
+            return new String(u, 0, u.length - 1);
         }
-    }
-
-    public static RequestType getRequestType(String requestUri) {
-        String extension = getExtension(requestUri);
-        switch (extension.toLowerCase()) {
-            case "html":
-                return RequestType.HTML;
-            case "json":
-                return RequestType.HTML;
-            case "css":
-                return RequestType.CSS;
-            case "js":
-                return RequestType.JS;
-            default:
-                return RequestType.MEDIA;
-        }
+        return url;
     }
 
     public static String getStringByBytesUTF8(byte[] buff, int buff_size) {
-        return getStringByBytes(buff, buff_size,"utf-8");
+        return getStringByBytes(buff, buff_size, "utf-8");
     }
 
     public static String getStringByBytes(byte[] b, int length, String charset) {

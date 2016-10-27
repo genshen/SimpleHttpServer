@@ -9,6 +9,8 @@ import me.gensh.utils.json.JSONObject;
 
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by cgs on 2016/2/12.
@@ -17,13 +19,13 @@ public class Index {
 
     public static ResponseInterface indexAction = context -> {
         String name = context.getParams().getString("name");
-        JSONObject data = new JSONObject();
+        Map<String,String> data = new HashMap<>();
         if (name.isEmpty()) {
             name = "World";
         }
         data.put("title", "Main  page");
-        data.put("name", name);
-        context.render("index/index.html", data);
+        data.put("name", "Worlds");
+        context.render("test.ftl", data);
     };
 
     public static ResponseInterface imageAction = context -> {

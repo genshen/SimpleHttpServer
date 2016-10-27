@@ -5,6 +5,8 @@ import me.gensh.utils.Network;
 import me.gensh.utils.json.JSONObject;
 
 import java.io.*;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * Created by cgs on 2016/2/14.
@@ -12,12 +14,12 @@ import java.io.*;
 public abstract class HtmlRender {
     BufferedOutputStream bos;
     String template;
-    JSONObject data;
+    Object data;
 
     HtmlRender() {
     }
 
-    HtmlRender(String template, JSONObject data, BufferedOutputStream bos) {
+    HtmlRender(String template, Object data, BufferedOutputStream bos) {
         this.bos = bos;
         this.template = template;
         this.data = data;
@@ -28,15 +30,15 @@ public abstract class HtmlRender {
      */
     public abstract void render();
 
-    public void setTemplate(String template){
+    public void setTemplate(String template) {
         this.template = template;
     }
 
-    public void setData(JSONObject data){
+    public void setData(Object data) {
         this.data = data;
     }
 
-    public void bindOutputStream(BufferedOutputStream bos){
+    public void bindOutputStream(BufferedOutputStream bos) {
         this.bos = bos;
     }
 }
