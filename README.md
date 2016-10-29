@@ -27,6 +27,7 @@ public Router(){
 then run your code, then type "localhost:8888/dome" in your browser,you can see words "Hello world".
 ##static file
 you can change static folder in Configure file(me.gensh.core.Config.java).
+
 for example:
 ```java
     public final static String StaticFilePrefix = "/static";
@@ -34,8 +35,11 @@ for example:
 then the files in "static" folder can be detected and return to browser if your url is start with "static".
 ##template render
 we use the Freemarker template engine as default render engine.
+
 see [Apache FreeMarker](http://freemarker.org/)
+
 (you can also add your own render engine.)
+
 change your code in section "start your logic code":
 ```java
    public static ResponseInterface domeAction = context -> {
@@ -50,10 +54,13 @@ change your code in section "start your logic code":
     };
 ```
 then you can add file named 'dome.ftl' in views folder.
+<br>
 *why views folder?*
+
 *you can change template folder by modify configure file:*
 ```java 
     final static public class View {
         public final static String VIEW = "/your_template_floder/"; //"views" as default.
     }
 ```
+ try url "localhost/dome/" and "localhost/dome/?name=WHO_AM_I" 
