@@ -1,9 +1,9 @@
 package me.gensh.router;
 
-import me.gensh.response.controllers.Index;
-import me.gensh.response.controllers.Media;
-import me.gensh.response.core.ResponseInterface;
-import me.gensh.response.core.ResponseMediaInterface;
+import me.gensh.controllers.Index;
+import me.gensh.controllers.Media;
+import me.gensh.core.response.ResponseInterface;
+import me.gensh.core.response.ResponseMediaInterface;
 
 import java.util.TreeMap;
 
