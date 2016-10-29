@@ -19,8 +19,8 @@ public class Index {
         if (name.isEmpty()) {
             name = "World";
         }
-        data.put("title", "Main  page");
-        data.put("name", "Worlds");
+        data.put("title", "Dome page");
+        data.put("name", name);
         context.render("test.ftl", data);
     };
 

@@ -14,8 +14,8 @@ create file "Dome.java" in controllers folder.
 add those code to Dome.java:
 ```java
 public static ResponseInterface domeAction = context -> {
-        context.render("Hello world");
-    };
+    context.render("Hello world");
+};
 ```
 then add the code below to file me.gensh.router.Router.java,in construction method:
 ```java
@@ -30,7 +30,7 @@ you can change static folder in Configure file(me.gensh.core.Config.java).
 
 for example:
 ```java
-    public final static String StaticFilePrefix = "/static";
+ public final static String StaticFilePrefix = "/static";
 ```
 then the files in "static" folder can be detected and return to browser if your url is start with "static".
 ##template render
@@ -42,25 +42,39 @@ see [Apache FreeMarker](http://freemarker.org/)
 
 change your code in section "start your logic code":
 ```java
-   public static ResponseInterface domeAction = context -> {
-        String name = context.getParams().getString("name");
-        Map<String,String> data = new HashMap<>();
-        if (name.isEmpty()) {
-             name = "World";
-        }
-        data.put("title", "Main  page");
-        data.put("name", "Worlds");
-        context.render("test.ftl", data);
-    };
+public static ResponseInterface domeAction = context -> {
+    String name = context.getParams().getString("name");
+    Map<String,String> data = new HashMap<>();
+    if (name.isEmpty()) {
+        name = "World";
+    }
+    data.put("title", "Dome page");
+    data.put("name", name);
+    context.render("test.ftl", data);
+};
 ```
 then you can add file named 'dome.ftl' in views folder.
-<br>
+
+code in file dome.ftl is show as below:
+```html
+<html>
+<head>
+    <title>Welcome!</title>
+</head>
+<body>
+<h1>Welcome ${name}!</h1>
+<p>title is:</p>
+    <h2>${title}</h2!
+</body>
+</html>
+```
+try url "localhost/dome/" and "localhost/dome/?name=WHO_AM_I" 
+
 *why views folder?*
 
 *you can change template folder by modify configure file:*
 ```java 
-    final static public class View {
-        public final static String VIEW = "/your_template_floder/"; //"views" as default.
-    }
+final static public class View {
+    public final static String VIEW = "/your_template_floder/"; //"views" as default.
+}
 ```
- try url "localhost/dome/" and "localhost/dome/?name=WHO_AM_I" 
